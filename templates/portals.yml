@@ -1,0 +1,611 @@
+# Portal Scanner Configuration
+# Used by /career-ops scan to discover new offers automatically.
+#
+# Strategy (3 levels):
+#   1. Playwright → careers_url of each company (real-time, reliable)
+#   2. Greenhouse API → structured JSON (fast, Greenhouse-only)
+#   3. WebSearch with site: filters (broad discovery, may be stale)
+#
+# IMPORTANT: Each company in tracked_companies MUST have careers_url.
+#
+# Configured for: Joshua Moran
+# Target roles: Entry-level Software Engineer, Full Stack Developer, Data Analyst
+# Locations: Omaha, NE or Atlanta, GA (open to remote and hybrid)
+
+# -- Title filter --
+# At least 1 positive must match AND 0 negatives must match (case-insensitive).
+
+title_filter:
+  positive:
+    # -- Software Engineering --
+    - "Software Engineer"
+    - "Software Developer"
+    - "Full Stack"
+    - "Fullstack"
+    - "Full-Stack"
+    - "Backend Engineer"
+    - "Backend Developer"
+    - "Frontend Engineer"
+    - "Frontend Developer"
+    - "Web Developer"
+    - "Application Developer"
+    - "Junior Developer"
+    - "Junior Engineer"
+    - "Associate Engineer"
+    - "Associate Developer"
+    # -- Data --
+    - "Data Analyst"
+    - "Data Engineer"
+    - "Business Analyst"
+    - "Analytics Engineer"
+    - "Database Developer"
+    - "SQL Developer"
+    # -- Android / Mobile --
+    - "Android Developer"
+    - "Android Engineer"
+    - "Mobile Developer"
+    # -- General tech --
+    - "QA Engineer"
+    - "Test Engineer"
+    - "DevOps Engineer"
+    - "Support Engineer"
+    - "IT Developer"
+    - "Systems Developer"
+  negative:
+    - "Staff"
+    - "Principal"
+    - "Director"
+    - "VP "
+    - "Architect"
+    - "Distinguished"
+    - ".NET"
+    - "iOS"
+    - "Swift"
+    - "Embedded"
+    - "Firmware"
+    - "FPGA"
+    - "ASIC"
+    - "Blockchain"
+    - "Web3"
+    - "Crypto"
+    - "Salesforce Admin"
+    - "SAP "
+    - "Oracle EBS"
+    - "Mainframe"
+    - "COBOL"
+    - "Ruby on Rails"
+    - "Rust"
+    - "Go Engineer"
+    - "Scala"
+    - "Elixir"
+  seniority_boost:
+    - "Junior"
+    - "Associate"
+    - "Entry"
+
+# -- Search queries --
+# Each query triggers a WebSearch. The scanner extracts title, URL, and company.
+
+search_queries:
+
+  # ── Omaha / Nebraska ──
+
+  - name: Indeed — Software Engineer Omaha
+    query: 'site:indeed.com "Software Engineer" OR "Software Developer" Omaha NE entry OR junior'
+    enabled: true
+
+  - name: Indeed — Full Stack Omaha
+    query: 'site:indeed.com "Full Stack Developer" OR "Full Stack Engineer" Omaha NE'
+    enabled: true
+
+  - name: Indeed — Data Analyst Omaha
+    query: 'site:indeed.com "Data Analyst" OR "Business Analyst" Omaha NE entry OR junior'
+    enabled: true
+
+  - name: LinkedIn — Software Engineer Omaha
+    query: 'site:linkedin.com/jobs "Software Engineer" OR "Software Developer" Omaha Nebraska entry OR junior'
+    enabled: true
+
+  - name: LinkedIn — Data Analyst Omaha
+    query: 'site:linkedin.com/jobs "Data Analyst" OR "Analytics Engineer" Omaha Nebraska entry OR junior'
+    enabled: true
+
+  - name: Nebraska Tech — All Roles
+    query: '"Software Engineer" OR "Developer" OR "Data Analyst" "Omaha" OR "Lincoln" OR "Nebraska" -senior -staff -lead'
+    enabled: true
+
+  - name: Builtin — Omaha Tech
+    query: 'site:builtin.com "Software Engineer" OR "Developer" OR "Data Analyst" Omaha OR Nebraska'
+    enabled: true
+
+  # ── Atlanta / Georgia ──
+
+  - name: Indeed — Software Engineer Atlanta
+    query: 'site:indeed.com "Software Engineer" OR "Software Developer" Atlanta GA entry OR junior'
+    enabled: true
+
+  - name: Indeed — Full Stack Atlanta
+    query: 'site:indeed.com "Full Stack Developer" OR "Full Stack Engineer" Atlanta GA'
+    enabled: true
+
+  - name: Indeed — Data Analyst Atlanta
+    query: 'site:indeed.com "Data Analyst" OR "Business Analyst" Atlanta GA entry OR junior'
+    enabled: true
+
+  - name: LinkedIn — Software Engineer Atlanta
+    query: 'site:linkedin.com/jobs "Software Engineer" OR "Software Developer" Atlanta Georgia entry OR junior'
+    enabled: true
+
+  - name: LinkedIn — Data Analyst Atlanta
+    query: 'site:linkedin.com/jobs "Data Analyst" OR "Analytics Engineer" Atlanta Georgia entry OR junior'
+    enabled: true
+
+  - name: Atlanta Tech — All Roles
+    query: '"Software Engineer" OR "Developer" OR "Data Analyst" "Atlanta" OR "Georgia" -senior -staff -lead'
+    enabled: true
+
+  - name: Builtin — Atlanta Tech
+    query: 'site:builtin.com "Software Engineer" OR "Developer" OR "Data Analyst" Atlanta OR Georgia'
+    enabled: true
+
+  # ── Remote / National ──
+
+  - name: LinkedIn — Full Stack Remote
+    query: 'site:linkedin.com/jobs "Full Stack Developer" OR "Full Stack Engineer" remote entry OR junior'
+    enabled: true
+
+  - name: LinkedIn — Remote Junior Engineer
+    query: 'site:linkedin.com/jobs "Junior Software Engineer" OR "Associate Software Engineer" remote'
+    enabled: true
+
+  # ── ATS portals (Ashby) ──
+
+  - name: Ashby — Software Engineer
+    query: 'site:jobs.ashbyhq.com "Software Engineer" OR "Full Stack" OR "Web Developer" remote OR "United States"'
+    enabled: true
+
+  - name: Ashby — Data Analyst
+    query: 'site:jobs.ashbyhq.com "Data Analyst" OR "Analytics Engineer" OR "Business Analyst" remote OR "United States"'
+    enabled: true
+
+  - name: Ashby — Junior & Entry Level
+    query: 'site:jobs.ashbyhq.com "Junior" OR "Associate" OR "Entry Level" "Engineer" OR "Developer" OR "Analyst"'
+    enabled: true
+
+  # ── ATS portals (Greenhouse) ──
+
+  - name: Greenhouse — Software Engineer
+    query: 'site:boards.greenhouse.io OR site:job-boards.greenhouse.io "Software Engineer" OR "Full Stack" remote OR "United States"'
+    enabled: true
+
+  - name: Greenhouse — Data Analyst
+    query: 'site:boards.greenhouse.io OR site:job-boards.greenhouse.io "Data Analyst" OR "Analytics Engineer" remote OR "United States"'
+    enabled: true
+
+  - name: Greenhouse — Junior Engineer
+    query: 'site:boards.greenhouse.io OR site:job-boards.greenhouse.io "Junior Engineer" OR "Associate Developer" OR "Entry Level"'
+    enabled: true
+
+  # ── ATS portals (Lever) ──
+
+  - name: Lever — Software Engineer
+    query: 'site:jobs.lever.co "Software Engineer" OR "Full Stack Developer" OR "Web Developer" remote'
+    enabled: true
+
+  - name: Lever — Data Analyst
+    query: 'site:jobs.lever.co "Data Analyst" OR "Business Analyst" OR "Analytics" remote'
+    enabled: true
+
+  # ── Other portals ──
+
+  - name: Wellfound — Junior Software Engineer
+    query: 'site:wellfound.com "Software Engineer" OR "Full Stack" junior OR entry remote'
+    enabled: true
+
+  - name: Workable — Developer Roles
+    query: 'site:apply.workable.com "Software Engineer" OR "Full Stack" OR "Web Developer" remote'
+    enabled: true
+
+# -- Tracked companies --
+# Checked directly via Playwright, Greenhouse API, or websearch.
+
+tracked_companies:
+
+  # ══════════════════════════════════════════
+  #  OMAHA / NEBRASKA
+  # ══════════════════════════════════════════
+
+  - name: Mutual of Omaha
+    careers_url: https://www.mutualofomaha.com/careers
+    scan_method: websearch
+    scan_query: 'site:mutualofomaha.com/careers "Software" OR "Developer" OR "Data Analyst" OR "Engineer"'
+    notes: "Omaha HQ. Insurance/financial. Major local employer."
+    enabled: true
+
+  - name: Union Pacific
+    careers_url: https://up.jobs
+    scan_method: websearch
+    scan_query: 'site:up.jobs "Software" OR "Developer" OR "Data" OR "Engineer" OR "Analyst"'
+    notes: "Omaha HQ. Fortune 500 railroad."
+    enabled: true
+
+  - name: First National Bank of Omaha
+    careers_url: https://www.fnbo.com/careers
+    scan_method: websearch
+    scan_query: '"First National Bank" OR "FNBO" "Software" OR "Developer" OR "Data Analyst" Omaha'
+    notes: "Omaha. Large regional bank with tech teams."
+    enabled: true
+
+  - name: Gallup
+    careers_url: https://www.gallup.com/careers
+    scan_method: websearch
+    scan_query: 'site:gallup.com/careers "Software" OR "Developer" OR "Data" OR "Engineer"'
+    notes: "Omaha HQ. Analytics and consulting."
+    enabled: true
+
+  - name: Werner Enterprises
+    careers_url: https://www.werner.com/careers
+    scan_method: websearch
+    scan_query: '"Werner Enterprises" "Software" OR "Developer" OR "Data" OR "IT"'
+    notes: "Omaha. Logistics and transportation tech."
+    enabled: true
+
+  - name: Kiewit
+    careers_url: https://www.kiewit.com/careers
+    scan_method: websearch
+    scan_query: 'site:kiewit.com/careers "Software" OR "Developer" OR "Data" OR "IT"'
+    notes: "Omaha HQ. Construction/engineering firm with internal tech."
+    enabled: true
+
+  - name: Flywheel
+    careers_url: https://getflywheel.com/careers
+    scan_method: websearch
+    scan_query: '"Flywheel" OR "getflywheel" "Engineer" OR "Developer" Omaha'
+    notes: "Omaha. WordPress hosting platform."
+    enabled: true
+
+  - name: Hudl
+    careers_url: https://www.hudl.com/jobs
+    scan_method: websearch
+    scan_query: 'site:hudl.com/jobs "Software" OR "Developer" OR "Engineer" OR "Data"'
+    notes: "Lincoln, NE. Sports tech. One of NE's top tech employers."
+    enabled: true
+
+  - name: Buildertrend
+    careers_url: https://buildertrend.com/careers
+    scan_method: websearch
+    scan_query: '"Buildertrend" "Software" OR "Developer" OR "Engineer" Omaha'
+    notes: "Omaha. Construction management SaaS."
+    enabled: true
+
+  - name: "Cabela's / Bass Pro"
+    careers_url: https://careers.basspro.com
+    scan_method: websearch
+    scan_query: '"Bass Pro" OR "Cabelas" "Software" OR "Developer" OR "Data" Nebraska OR Omaha'
+    notes: "Sidney/Omaha. Retail tech."
+    enabled: true
+
+  - name: TD Ameritrade / Schwab
+    careers_url: https://www.aboutschwab.com/careers
+    scan_method: websearch
+    scan_query: '"Schwab" OR "TD Ameritrade" "Software" OR "Developer" OR "Engineer" Omaha'
+    notes: "Omaha presence. Fintech."
+    enabled: true
+
+  - name: PayPal (Omaha)
+    careers_url: https://careers.pypl.com
+    scan_method: websearch
+    scan_query: 'site:careers.pypl.com "Software" OR "Developer" OR "Engineer" Omaha OR Nebraska'
+    notes: "Omaha office. Payments/fintech."
+    enabled: true
+
+  - name: Nelnet
+    careers_url: https://www.nelnet.com/careers
+    scan_method: websearch
+    scan_query: '"Nelnet" "Software" OR "Developer" OR "Engineer" OR "Data" Lincoln OR Omaha'
+    notes: "Lincoln, NE. Fintech/student loans. Growing tech org."
+    enabled: true
+
+  - name: Sandhills Global
+    careers_url: https://www.sandhills.com/careers
+    scan_method: websearch
+    scan_query: '"Sandhills Global" "Software" OR "Developer" OR "Web" OR "Data"'
+    notes: "Lincoln, NE. Publishing and tech."
+    enabled: true
+
+  # ══════════════════════════════════════════
+  #  ATLANTA / GEORGIA
+  # ══════════════════════════════════════════
+
+  - name: The Home Depot
+    careers_url: https://careers.homedepot.com
+    scan_method: websearch
+    scan_query: 'site:careers.homedepot.com "Software" OR "Developer" OR "Data" OR "Engineer" Atlanta'
+    notes: "Atlanta HQ. Fortune 20. Large tech org (OrangeWorks)."
+    enabled: true
+
+  - name: Cox Enterprises
+    careers_url: https://jobs.coxenterprises.com
+    scan_method: websearch
+    scan_query: 'site:jobs.coxenterprises.com "Software" OR "Developer" OR "Data Analyst" OR "Engineer"'
+    notes: "Atlanta HQ. Media, automotive, telecom."
+    enabled: true
+
+  - name: Delta Air Lines
+    careers_url: https://delta.avature.net/careers
+    scan_method: websearch
+    scan_query: '"Delta Air Lines" "Software" OR "Developer" OR "Data" OR "Engineer" OR "IT" Atlanta'
+    notes: "Atlanta HQ. Fortune 500. Growing tech division."
+    enabled: true
+
+  - name: NCR Voyix
+    careers_url: https://www.ncr.com/careers
+    scan_method: websearch
+    scan_query: '"NCR" OR "NCR Voyix" "Software" OR "Developer" OR "Engineer" Atlanta'
+    notes: "Atlanta HQ. Fintech and POS systems."
+    enabled: true
+
+  - name: Mailchimp (Intuit)
+    careers_url: https://www.intuit.com/careers
+    scan_method: websearch
+    scan_query: '"Mailchimp" OR "Intuit" "Software" OR "Developer" OR "Engineer" Atlanta'
+    notes: "Atlanta office. Email/marketing platform."
+    enabled: true
+
+  - name: Calendly
+    careers_url: https://careers.calendly.com
+    scan_method: websearch
+    scan_query: 'site:careers.calendly.com "Software" OR "Developer" OR "Engineer"'
+    notes: "Atlanta HQ. Scheduling SaaS."
+    enabled: true
+
+  - name: OneTrust
+    careers_url: https://www.onetrust.com/careers
+    scan_method: websearch
+    scan_query: '"OneTrust" "Software" OR "Developer" OR "Engineer" Atlanta'
+    notes: "Atlanta HQ. Privacy and compliance SaaS unicorn."
+    enabled: true
+
+  - name: SalesLoft
+    careers_url: https://www.salesloft.com/careers
+    scan_method: websearch
+    scan_query: '"SalesLoft" "Software" OR "Developer" OR "Engineer" Atlanta'
+    notes: "Atlanta HQ. Sales engagement SaaS."
+    enabled: true
+
+  - name: Greenlight Financial
+    careers_url: https://www.greenlight.com/careers
+    scan_method: websearch
+    scan_query: '"Greenlight" "Software" OR "Developer" OR "Engineer" Atlanta'
+    notes: "Atlanta HQ. Fintech for families."
+    enabled: true
+
+  - name: Cardlytics
+    careers_url: https://www.cardlytics.com/careers
+    scan_method: websearch
+    scan_query: '"Cardlytics" "Software" OR "Developer" OR "Data" OR "Engineer" Atlanta'
+    notes: "Atlanta HQ. Fintech and data analytics."
+    enabled: true
+
+  - name: Honeywell
+    careers_url: https://careers.honeywell.com
+    scan_method: websearch
+    scan_query: 'site:careers.honeywell.com "Software" OR "Developer" OR "Data" OR "Engineer" Atlanta'
+    notes: "Atlanta presence. Industrial tech conglomerate."
+    enabled: true
+
+  - name: Intercontinental Exchange (ICE)
+    careers_url: https://www.ice.com/careers
+    scan_method: websearch
+    scan_query: '"Intercontinental Exchange" OR "ICE" "Software" OR "Developer" OR "Data" Atlanta'
+    notes: "Atlanta HQ. Financial data and exchanges."
+    enabled: true
+
+  - name: Worldpay
+    careers_url: https://careers.worldpay.com
+    scan_method: websearch
+    scan_query: '"Worldpay" "Software" OR "Developer" OR "Engineer" Atlanta'
+    notes: "Atlanta presence. Payments processing."
+    enabled: true
+
+  - name: UPS
+    careers_url: https://www.jobs-ups.com
+    scan_method: websearch
+    scan_query: '"UPS" "Software" OR "Developer" OR "Data" OR "Engineer" Atlanta'
+    notes: "Atlanta HQ. Fortune 500 logistics tech."
+    enabled: true
+
+  - name: Emory University
+    careers_url: https://hr.emory.edu/careers
+    scan_method: websearch
+    scan_query: '"Emory University" "Software" OR "Developer" OR "Data" OR "IT" OR "Programmer"'
+    notes: "Atlanta. Josh's alma mater — network advantage."
+    enabled: true
+
+  - name: Georgia Tech Research Institute
+    careers_url: https://careers.gtri.gatech.edu
+    scan_method: websearch
+    scan_query: '"Georgia Tech Research" OR "GTRI" "Software" OR "Developer" OR "Data" OR "Engineer"'
+    notes: "Atlanta. Research-adjacent tech roles."
+    enabled: true
+
+  - name: Chick-fil-A
+    careers_url: https://www.chick-fil-a.com/careers
+    scan_method: websearch
+    scan_query: '"Chick-fil-A" "Software" OR "Developer" OR "Data" OR "Engineer" OR "IT" Atlanta'
+    notes: "Atlanta HQ. Growing internal tech team."
+    enabled: true
+
+  - name: Equifax
+    careers_url: https://careers.equifax.com
+    scan_method: websearch
+    scan_query: 'site:careers.equifax.com "Software" OR "Developer" OR "Data" OR "Engineer" Atlanta'
+    notes: "Atlanta HQ. Data and analytics company."
+    enabled: true
+
+  - name: Southern Company
+    careers_url: https://southerncompany.jobs
+    scan_method: websearch
+    scan_query: '"Southern Company" "Software" OR "Developer" OR "Data" OR "IT" Atlanta'
+    notes: "Atlanta HQ. Energy utility with tech teams."
+    enabled: true
+
+  - name: Coca-Cola
+    careers_url: https://careers.coca-colacompany.com
+    scan_method: websearch
+    scan_query: '"Coca-Cola" "Software" OR "Developer" OR "Data" OR "Engineer" OR "IT" Atlanta'
+    notes: "Atlanta HQ. Fortune 50. Digital and tech teams."
+    enabled: true
+
+  # ══════════════════════════════════════════
+  #  REMOTE-FRIENDLY TECH COMPANIES
+  # ══════════════════════════════════════════
+
+  - name: Automattic
+    careers_url: https://automattic.com/work-with-us
+    scan_method: websearch
+    scan_query: 'site:automattic.com/work-with-us "Engineer" OR "Developer"'
+    notes: "Fully remote. WordPress/WooCommerce."
+    enabled: true
+
+  - name: GitLab
+    careers_url: https://about.gitlab.com/jobs
+    scan_method: websearch
+    scan_query: 'site:about.gitlab.com/jobs "Software Engineer" OR "Full Stack" OR "Backend" OR "Frontend"'
+    notes: "All-remote. DevOps platform."
+    enabled: true
+
+  - name: Zapier
+    careers_url: https://jobs.ashbyhq.com/zapier
+    scan_method: websearch
+    scan_query: 'site:jobs.ashbyhq.com/zapier "Engineer" OR "Developer"'
+    notes: "Remote-first. Automation platform."
+    enabled: true
+
+  - name: Shopify
+    careers_url: https://www.shopify.com/careers
+    scan_method: websearch
+    scan_query: 'site:shopify.com/careers "Software" OR "Developer" OR "Full Stack" OR "Data"'
+    notes: "Remote-friendly. E-commerce platform."
+    enabled: true
+
+  - name: Basecamp (37signals)
+    careers_url: https://37signals.com/jobs
+    scan_method: websearch
+    scan_query: 'site:37signals.com/jobs OR "basecamp" "developer" OR "engineer"'
+    notes: "Remote. Project management tools."
+    enabled: true
+
+  - name: Supabase
+    careers_url: https://jobs.ashbyhq.com/supabase
+    scan_method: websearch
+    scan_query: 'site:jobs.ashbyhq.com/supabase "Engineer" OR "Developer"'
+    notes: "Remote. Open-source Firebase alternative."
+    enabled: true
+
+  - name: Hashicorp
+    careers_url: https://www.hashicorp.com/careers
+    scan_method: websearch
+    scan_query: 'site:hashicorp.com/careers "Software Engineer" OR "Developer"'
+    notes: "Remote-friendly. Infrastructure tools."
+    enabled: true
+
+  - name: Vercel
+    careers_url: https://job-boards.greenhouse.io/vercel
+    api: https://boards-api.greenhouse.io/v1/boards/vercel/jobs
+    notes: "Remote. Frontend/full-stack platform (Next.js)."
+    enabled: true
+
+  - name: Airtable
+    careers_url: https://job-boards.greenhouse.io/airtable
+    api: https://boards-api.greenhouse.io/v1/boards/airtable/jobs
+    notes: "Remote. No-code platform."
+    enabled: true
+
+  - name: Retool
+    careers_url: https://retool.com/careers
+    scan_method: websearch
+    scan_query: 'site:retool.com/careers "Engineer" OR "Developer"'
+    notes: "Remote options. Internal tools platform."
+    enabled: true
+
+  # ══════════════════════════════════════════
+  #  MAJOR TECH (entry-level / new-grad friendly)
+  # ══════════════════════════════════════════
+
+  - name: Microsoft
+    careers_url: https://careers.microsoft.com
+    scan_method: websearch
+    scan_query: 'site:careers.microsoft.com "Software Engineer" OR "Software Developer" "entry" OR "junior" OR "new grad" Omaha OR Atlanta OR remote'
+    notes: "Offices in Atlanta. Remote/hybrid options."
+    enabled: true
+
+  - name: Google
+    careers_url: https://www.google.com/about/careers
+    scan_method: websearch
+    scan_query: 'site:google.com/about/careers "Software Engineer" OR "Software Developer" "entry" OR "junior" OR "new grad" Atlanta OR remote'
+    notes: "Atlanta office. L3/L4 entry roles."
+    enabled: true
+
+  - name: Amazon
+    careers_url: https://www.amazon.jobs
+    scan_method: websearch
+    scan_query: 'site:amazon.jobs "Software Development Engineer" OR "SDE" "entry" OR "junior" OR "new grad" Atlanta OR remote'
+    notes: "SDE roles. Atlanta presence."
+    enabled: true
+
+  - name: Salesforce
+    careers_url: https://careers.salesforce.com
+    scan_method: websearch
+    scan_query: 'site:careers.salesforce.com "Software Engineer" OR "Developer" OR "Associate" OR "New Grad" Atlanta OR remote'
+    notes: "Atlanta office. Entry-level programs."
+    enabled: true
+
+  - name: Oracle
+    careers_url: https://www.oracle.com/careers
+    scan_method: websearch
+    scan_query: 'site:oracle.com/careers "Software" OR "Developer" "entry" OR "junior" OR "associate" Atlanta OR Omaha OR remote'
+    notes: "Enterprise tech. Entry-level programs."
+    enabled: true
+
+  - name: IBM
+    careers_url: https://www.ibm.com/careers
+    scan_method: websearch
+    scan_query: 'site:ibm.com/careers "Software Engineer" OR "Developer" OR "Data Analyst" "entry" OR "associate" Atlanta OR remote'
+    notes: "Enterprise tech. New grad programs."
+    enabled: true
+
+  # ══════════════════════════════════════════
+  #  STARTUPS (entry-level friendly)
+  # ══════════════════════════════════════════
+
+  - name: Linear
+    careers_url: https://jobs.ashbyhq.com/linear
+    notes: "Remote. Project management tool."
+    enabled: true
+
+  - name: Notion
+    careers_url: https://job-boards.greenhouse.io/notion
+    api: https://boards-api.greenhouse.io/v1/boards/notion/jobs
+    notes: "Productivity/docs platform."
+    enabled: true
+
+  - name: Figma
+    careers_url: https://job-boards.greenhouse.io/figma
+    api: https://boards-api.greenhouse.io/v1/boards/figma/jobs
+    notes: "Design tool. Engineering roles."
+    enabled: true
+
+  - name: Stripe
+    careers_url: https://stripe.com/jobs
+    scan_method: websearch
+    scan_query: 'site:stripe.com/jobs "Software Engineer" OR "Full Stack" OR "New Grad"'
+    notes: "Payments platform. New grad roles."
+    enabled: true
+
+  - name: Twilio
+    careers_url: https://www.twilio.com/en-us/company/jobs
+    scan_method: websearch
+    scan_query: 'site:twilio.com/company/jobs "Software Engineer" OR "Developer" OR "Full Stack"'
+    notes: "Communications platform. Remote roles."
+    enabled: true
